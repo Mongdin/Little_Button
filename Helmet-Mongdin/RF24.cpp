@@ -237,18 +237,18 @@ uint8_t RF24::get_status(void)
     return status;
 }
 
-//void RF24::print_status(uint8_t status)
-//{
-//  printf(("STATUS\t\t = 0x%02x RX_DR=%x TX_DS=%x MAX_RT=%x RX_P_NO=%x TX_FULL=%x\r\n"),
-//           status,
-//           (status & _BV(RX_DR))?1:0,
-//           (status & _BV(TX_DS))?1:0,
-//           (status & _BV(MAX_RT))?1:0,
-//           ((status >> RX_P_NO) & 7),
-//           (status & _BV(TX_FULL))?1:0
-//          );
-//}
-//
+void RF24::print_status(uint8_t status)
+{
+  printf(("STATUS\t\t = 0x%02x RX_DR=%x TX_DS=%x MAX_RT=%x RX_P_NO=%x TX_FULL=%x\r\n"),
+           status,
+           (status & _BV(RX_DR))?1:0,
+           (status & _BV(TX_DS))?1:0,
+           (status & _BV(MAX_RT))?1:0,
+           ((status >> RX_P_NO) & 7),
+           (status & _BV(TX_FULL))?1:0
+          );
+}
+
 //
 //
 //void RF24::print_observe_tx(uint8_t value)
@@ -262,35 +262,35 @@ uint8_t RF24::get_status(void)
 //
 //
 //
-//void RF24::print_byte_register(const char* name, uint8_t reg, uint8_t qty)
-//{
-//  char extra_tab = strlen(name) < 8 ? '\t' : 0;
-//  printf("%s =",name);
-//  while (qty--)
-//    printf((" 0x%02x"),read_register(reg++));
-//  printf(("\r\n"));
-//}
+void RF24::print_byte_register(const char* name, uint8_t reg, uint8_t qty)
+{
+  char extra_tab = strlen(name) < 8 ? '\t' : 0;
+  printf("%s =",name);
+  while (qty--)
+    printf((" 0x%02x"),read_register(reg++));
+  printf(("\r\n"));
+}
+
 //
 //
-//
-//void RF24::print_address_register(const char* name, uint8_t reg, uint8_t qty)
-//{
-//  char extra_tab = strlen_P(name) < 8 ? '\t' : 0;
-//  printf("%s =",name);
-//
-//  while (qty--)
-//  {
-//    uint8_t buffer[5];
-//    read_register(reg++,buffer,sizeof buffer);
-//
-//    printf((" 0x"));
-//    uint8_t* bufptr = buffer + sizeof buffer;
-//    while( --bufptr >= buffer )
-//      printf(("%02x"),*bufptr);
-//  }
-//
-//  printf(("\r\n"));
-//}
+void RF24::print_address_register(const char* name, uint8_t reg, uint8_t qty)
+{
+  char extra_tab = strlen(name) < 8 ? '\t' : 0;
+  printf("%s =",name);
+
+  while (qty--)
+  {
+    uint8_t buffer[5];
+    read_register(reg++,buffer,sizeof buffer);
+
+    printf((" 0x"));
+    uint8_t* bufptr = buffer + sizeof buffer;
+    while( --bufptr >= buffer )
+      printf(("%02x"),*bufptr);
+  }
+
+  printf(("\r\n"));
+}
 
 //
 RF24::RF24(PinName mosi, PinName miso, PinName sck, PinName _csnpin, PinName _cepin) :
@@ -374,30 +374,30 @@ static const char           rf24_pa_dbm_e_str_2[] = "PA_MED";
 static const char           rf24_pa_dbm_e_str_3[] = "PA_HIGH";
 static const char *const    rf24_pa_dbm_e_str_P[] = { rf24_pa_dbm_e_str_0, rf24_pa_dbm_e_str_1, rf24_pa_dbm_e_str_2, rf24_pa_dbm_e_str_3, };
 
-//void RF24::printDetails(void)
+void RF24::printDetails(void)
 
-//{
-//  print_status(get_status());
-//
-//  print_address_register(("RX_ADDR_P0-1"),RX_ADDR_P0,2);
-//  print_byte_register(("RX_ADDR_P2-5"),RX_ADDR_P2,4);
-//  print_address_register(("TX_ADDR"),TX_ADDR);
-//
-//  print_byte_register(("RX_PW_P0-6"),RX_PW_P0,6);
-//  print_byte_register(("EN_AA"),EN_AA);
-//  print_byte_register(("EN_RXADDR"),EN_RXADDR);
-//  print_byte_register(("RF_CH"),RF_CH);
-//  print_byte_register(("RF_SETUP"),RF_SETUP);
-//  print_byte_register(("CONFIG"),CONFIG);
-//  print_byte_register(("DYNPD/FEATURE"),DYNPD,2);
-//
-//  printf(("Data Rate\t = %s\r\n"), rf24_datarate_e_str_P[getDataRate()]);
-//  printf(("Model\t\t = %s\r\n"), rf24_model_e_str_P[isPVariant()]);
-//  printf(("CRC Length\t = %s\r\n"),rf24_crclength_e_str_P[getCRCLength()]);
-//  printf(("PA Power\t = %s\r\n"),rf24_pa_dbm_e_str_P[getPALevel()]);
-//}
+{
+  print_status(get_status());
 
-//
+  print_address_register(("RX_ADDR_P0-1"),RX_ADDR_P0,2);
+  print_byte_register(("RX_ADDR_P2-5"),RX_ADDR_P2,4);
+  print_address_register(("TX_ADDR"),TX_ADDR);
+
+  print_byte_register(("RX_PW_P0-6"),RX_PW_P0,6);
+  print_byte_register(("EN_AA"),EN_AA);
+  print_byte_register(("EN_RXADDR"),EN_RXADDR);
+  print_byte_register(("RF_CH"),RF_CH);
+  print_byte_register(("RF_SETUP"),RF_SETUP);
+  print_byte_register(("CONFIG"),CONFIG);
+  print_byte_register(("DYNPD/FEATURE"),DYNPD,2);
+
+  printf(("Data Rate\t = %s\r\n"), rf24_datarate_e_str_P[getDataRate()]);
+  printf(("Model\t\t = %s\r\n"), rf24_model_e_str_P[isPVariant()]);
+  printf(("CRC Length\t = %s\r\n"),rf24_crclength_e_str_P[getCRCLength()]);
+  printf(("PA Power\t = %s\r\n"),rf24_pa_dbm_e_str_P[getPALevel()]);
+}
+
+
 
 /*$on*/
 bool RF24::begin (void)

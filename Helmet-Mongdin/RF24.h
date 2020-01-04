@@ -265,7 +265,7 @@ protected:
    * @param len Number of bytes to be sent
    * @return Current value of status register
    */
-  uint8_t write_payload(const void* buf, uint8_t len);
+  
 
   /**
    * Read the receive payload
@@ -333,6 +333,7 @@ protected:
   /**@}*/
 
 public:
+    uint8_t write_payload(const void* buf, uint8_t len);
   /**
    * @name Primary public interface
    *
